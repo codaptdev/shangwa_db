@@ -1,9 +1,10 @@
 # Shangwa DB
 
-Shangwa DB is NO-SQL document database that programmers can use for testing adn development. There are situations where you might want to test your app using a mock or fake database, Shangwa DB is there for you.
+Shangwa DB is a NO-SQL document data store that programmers can use during testing  and development. There are situations where you might want to test your app using a mock or fake database, Shangwa DB is there for you.
 
 1. Its local so there is no need to make metwork calls which can be slow
 2. It can be git ignored (optional) to reduce the bloat of your git repository
+3. Easy to use api
 
 
 # Database Heirachy
