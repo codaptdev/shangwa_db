@@ -1,14 +1,19 @@
-import { DocumentData, ICollection } from "../interfaces/cluster.interface";
+import { DocumentData, ICollection } from "../../interfaces/cluster.interface";
 import * as fs from 'fs';
-import { DocumentRef } from "./document_ref";
-import { fixName } from "../functions/utils";
+import { DocumentRef } from "../document_ref";
+import { fixName } from "../../functions/utils";
 
 export interface CollectionParams {
     path : string,
     name : string
 }
 
-export class Collection implements ICollection {
+/** Creates a collection where the documents are stored as single
+ *  files
+ * 
+ * @deprecated Consider using `SingleFileCollections`
+ *  */
+export class MiltipleFileCollection implements ICollection {
 
 
     path: string;
@@ -26,10 +31,7 @@ export class Collection implements ICollection {
     }
 
     insertOne(docData: DocumentData): DocumentRef {
-        const docPath = this.getDocPath(docData.id);
-        const docRef = DocumentRef.withData(docPath, docData.jsonStr);
-
-        return docRef;
+        throw Error('Method no implemented')
     }
 
     insertMany(jsonDocs: DocumentData[]): void {
