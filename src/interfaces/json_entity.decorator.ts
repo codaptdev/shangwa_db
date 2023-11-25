@@ -5,7 +5,7 @@ export type Constructor = { new(...args: any[]): {} }
 export function JsonEntity<T extends Constructor>(baseClass: T) {
 
   // Define the toJson method on the prototype of the class
-  baseClass.prototype.toJson = function () {
+  baseClass.prototype.toDb = function () {
     const props = this.getProps();
     const json: { [key: string]: any } = {};
     for (const prop of props) {
@@ -19,8 +19,8 @@ export function JsonEntity<T extends Constructor>(baseClass: T) {
     return Object.getOwnPropertyNames(this);
   };
 
-  // Add the uuid property to the prototype of the class
-  baseClass.prototype.uuid = uuidv4();
+  // generates a uuid for that object
+  baseClass.prototype.uuid = () => uuidv4();
 
   // Return the decorated class
   return baseClass;
