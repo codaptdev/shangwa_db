@@ -1,4 +1,4 @@
-import { Database } from "../classes/database";
+import { MultipleFileDatabase } from "../classes/multiple_file_sys/mutiple_file_database";
 import { DatabaseConfig } from "../interfaces/database_config";
 import { JsonEntity} from "../interfaces/json_entity.decorator";
 import * as fs from 'fs';
@@ -10,20 +10,19 @@ export function getBaseDir() : string {
     return resolve('./');
 }
 
-const baseFolderName = 'local';
+const baseFolderName =   '.local';
 
 /** Sets up the shangwa db directory */
 export function initializeDir() {
-
     const base = getBaseDir()
-    const finalPath = `${base}/${baseFolderName}`;
+    const finalPath =  `${base}/${baseFolderName}`;
 
     fs.mkdirSync(finalPath);
-
 
 }
 
 export function initializeDBDir() {
+
     const base = getBaseDir()
     const finalPath = `${base}/${baseFolderName}/databases`;
 
