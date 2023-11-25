@@ -3,7 +3,7 @@ import { ICollection } from "../interfaces/cluster.interface";
 import { IDatabase } from "../interfaces/database.interface";
 import { ClusterConfig } from "../interfaces/database_config";
 import * as fs from 'fs';
-import { Collection } from "./collection";
+import { MiltipleFileCollection } from "./collection";
 
 export interface databaseParams  {
     name : string;
@@ -11,7 +11,11 @@ export interface databaseParams  {
     shouldGitIgnore? : true
 }
 
-export class Database implements IDatabase {
+/** A database object were documents in collections are stored in seperate files
+
+ *@deprecated Consider using the new database api `SingleFileDatabase` 
+ */
+export class MultipleFileDatabase implements IDatabase {
     name: string;
     path: string;
 
@@ -50,7 +54,7 @@ export class Database implements IDatabase {
     }
 
     createCollection(config: ClusterConfig): ICollection {
-        const colRef = new Collection({
+        const colRef = new MiltipleFileCollection({
             name : config.name,
             path : `${this.path}`
         })
@@ -63,7 +67,7 @@ export class Database implements IDatabase {
     }
 
     getCollection(colName: string): ICollection {
-        const colRef = new Collection({
+        const colRef = new MiltipleFileCollection({
             name : colName,
             path : `${this.path}`
         })
