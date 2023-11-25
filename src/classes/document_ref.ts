@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 
-/** Document Referrence Object */
+/** Multiple File Document Referrence Object
+ */
 export class DocumentRef {
     
     path : string
