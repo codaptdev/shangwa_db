@@ -62,3 +62,35 @@ export class DocumentRef {
         return doc;
     }   
 }
+
+export interface SingleFileDocRefParams {
+    id : string,
+    index : number,
+    collectionPath : string
+}
+
+export class SingleFileDocRef {
+
+    id : string;
+    index : number;
+    collectionPath : string
+
+    constructor(params : SingleFileDocRefParams) {
+        this.id = params.id;
+        this.index = params.index;
+        this.collectionPath = params.collectionPath;
+    }
+
+    getDocData() : any {
+        const docs = JSON.parse(this.getCollectionFile()) as any[];
+        let data : any;
+
+        return docs.at(this.index)
+
+    }
+
+    private getCollectionFile() : string{
+        const file = fs.readFileSync(this.collectionPath, 'utf-8');
+        return file 
+    }
+}
