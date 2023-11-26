@@ -19,31 +19,52 @@ export class SingleFileCollection  {
     private collectionFilePath : string ;
     private collectionFileName : string;
 
-    constructor(params : CollectionParams, isExisting : boolean = false) {
+    constructor(
+        params : CollectionParams, 
+
+
+        /**default value is `false` 
+         * 
+         * A a boolean to flag to let the constructor know if you are refferencing an existing collection
+         * then `isExisting` = `true` 
+         * 
+         * Or you are want the constructor to create a new collection then  `isExisting` = `false`
+         */
+        
+        isExisting : boolean = false
+    ) {
         this.name = fixName(params.name);
         this.path = `${params.path}/${this.name}`;
         this.collectionFileName = `${this.name}.collection.json`
         this.collectionFilePath = `${this.path}/${this.collectionFileName}`
 
-        // Collection already exists
         if(isExisting) {
-            if(!this.collectionExists()) {
-
-                // If collection doesn;t existing throw an error
-                throw new CollectionNotFound(this.name)
-            }
+            this.handleExistingCollection()
         } else {
+            this.handleNewCollection()
+        }
+        
+    }
 
-            if(!this.collectionExists()) {
-                this.createColBaseDir()
-                
-                // creates a collection.json file if it doesn't exist
-                if(!this.collectionFileExists()) {
-                    this.createCollectionFile()
-                }
+    /** Sets up an already existing collection */
+    private handleExistingCollection() {
+
+        if(!this.collectionExists()) {
+            // If collection doesn;t existing throw an error
+            throw new CollectionNotFound(this.name)
+        }
+    }
+
+    /** Sets up a new collection */
+    private handleNewCollection() {
+        if(!this.collectionExists()) {
+            this.createColBaseDir()
+            
+            // creates a collection.json file if it doesn't exist
+            if(!this.collectionFileExists()) {
+                this.createCollectionFile()
             }
         }
-
     }
 
     /** Inserts a doc represented as a Javascript Object into the collection */
