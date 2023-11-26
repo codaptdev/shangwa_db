@@ -73,7 +73,7 @@ export class SingleFileCollection  {
         const colAsJson = this.getAllDocs();
         const docId =  colAsJson.length.toString();
         const docIndex  = colAsJson.length;
-        doc['id'] = docIndex
+        doc['id'] = docIndex.toString()
 
         colAsJson.push(doc);
 
