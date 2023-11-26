@@ -85,13 +85,12 @@ export class SingleFileDocRef {
     getDocData() : any {
         const docs = JSON.parse(this.getCollectionFile()) as any[];
         let data : any;
-
+        
         return docs.at(this.index)
-
     }
 
     private getCollectionFile() : string{
         const file = fs.readFileSync(this.collectionPath, 'utf-8');
-        return file 
+        return file;
     }
 }

@@ -1,11 +1,23 @@
+/**
+ * 
+ * By Tadiwanashe Shangwa with 🧡
+ * 
+ * This file contains the methods, classes and variables that are imported by the user 
+ * of this package when they require it!
+ */
+
+
+import { DatabaseNotFound } from "./classes/exceptions";
 import { SingleFileDatabase } from "./classes/single_file_sys/single_file_database";
 import { setUpShangwaDB, getDatabasesRootPath } from "./functions/create_db";
 import { DatabaseConfig } from "./interfaces/database_config";
 import * as fs from 'fs';
 
+/** Represents the meta deta for a document */
 export interface DocumentData {
     jsonStr : string
 }
+
     /** Sets up a database in your working directory. If you specify to gitIgnore the databases
  * then changes to the database don't affect your git repo
  * 
@@ -45,17 +57,3 @@ export function getExistingDatabase(name : string) : SingleFileDatabase {
         shouldGitIgnore : true
     })
 }
-
-class DatabaseNotFound implements Error {
-
-    name: string = 'Database not found'
-    message: string;
-    stack?: string | undefined;
-
-    constructor(name : string) {
-        this.message = `The database "${name}" doesn't exist"`
-    }
-
-}
-
-

@@ -3,18 +3,9 @@ import { DocumentData, ICollection } from "../../interfaces/cluster.interface";
 import { CollectionParams } from "../multiple_file_sys/multiple_file_collection";
 import { DocumentRef, SingleFileDocRef } from "../document_ref";
 import * as fs from 'fs';
-
-export class CollectionDoesNotExist implements Error {
-    name: string = 'CollectionDoesNotExist';
-    message: string;
-    stack?: string | undefined;
-
-    constructor(name : string) {
-        this.message = `The collection '${name}' does not exist`;
-    }
+import { CollectionNotFound } from "../exceptions";
 
 
-}
  
 /** Creates a Collection where all documents are stored in one file! */
 export class SingleFileCollection  {
@@ -39,7 +30,7 @@ export class SingleFileCollection  {
             if(!this.collectionExists()) {
 
                 // If collection doesn;t existing throw an error
-                throw new CollectionDoesNotExist(this.name)
+                throw new CollectionNotFound(this.name)
             }
         } else {
 
@@ -55,12 +46,34 @@ export class SingleFileCollection  {
 
     }
 
-    /** Adds a document into the collection file */
-    insertOne(docData: DocumentData): SingleFileDocRef {
+    /** Inserts a doc represented as a Javascript Object into the collection */
+    insertDoc(doc : any) : SingleFileDocRef{
         const colAsFile = fs.readFileSync(this.collectionFilePath, 'utf-8');
         const colAsJson = this.getAllDocs();
         const docId =  colAsJson.length.toString();
-        const docIndex  = colAsJson.length - 1;
+        const docIndex  = colAsJson.length;
+        doc['id'] = docIndex
+
+        colAsJson.push(doc);
+
+        this.commitChanges(colAsJson)
+
+        return new SingleFileDocRef({
+            id : docId,
+            index : docIndex,
+            collectionPath: this.collectionFilePath
+        })
+    }
+
+    /** inserts a document into the collection file passed as a `DocumentData` object 
+     * 
+     * @deprecated use `insertDoc` instead
+    */
+
+    insertOne(docData: DocumentData): SingleFileDocRef {
+        const colAsJson = this.getAllDocs();
+        const docId =  colAsJson.length.toString();
+        const docIndex  = colAsJson.length;
 
         // The json string passed as parameter as a js object
         const docAsObj = JSON.parse(docData.jsonStr);
@@ -83,20 +96,42 @@ export class SingleFileCollection  {
         fs.writeFileSync( this.collectionFilePath, JSON.stringify(changes))
     }
 
-    /** INsets many documents into the collection file */
+    /** Inserts many documents into the collection file
+     * 
+     * @deprecated use `insertDocs` instead
+     */
     insertMany(jsonDocs: DocumentData[]): void {
         jsonDocs.forEach((doc) => {
             this.insertOne(doc)
         })
     }
 
-    /** Deletes a document from the store! */
+    /** Inserts an array of docs into the store! */
+    insertDocs(docs : any[]) : void {
+        docs.forEach((doc) => {
+            this.insertDoc(doc)
+        })
+    }
+
+    /** Deletes a document from the store with the specified ID! */
     deleteDoc(id: string): void {
         const docs = this.getAllDocs();
 
         const filteredDocs = docs.filter((doc, index) => {
             // only return docs that are not equal to the passed id of the doc to be deleted
-            return doc['id'] != id
+            return doc['id'] !== id
+        })
+
+        this.commitChanges(filteredDocs);
+    }
+
+    /** Deletes a document from the store using the where clause ! */
+    deleteWhereDoc<T>(key: string, equalsTo : T): void {
+        const docs = this.getAllDocs();
+
+        const filteredDocs = docs.filter((doc, index) => {
+            // only return docs that are not equal to the passed id of the doc to be deleted
+            return doc[key] !== equalsTo
         })
 
         this.commitChanges(filteredDocs);
@@ -126,6 +161,19 @@ export class SingleFileCollection  {
         // the given ID was not found!
         
         return foundAt == -1 ? undefined : doc
+    }
+
+    getDocWhere<T>(key: string, equalTo: T) : any {
+        const docs = this.getAllDocs();
+        let foundAt = -1;
+
+        docs.forEach((doc, index) => {
+            if(doc[key] === equalTo) {
+                foundAt = index;
+            }
+        })
+
+        return docs.at(foundAt);
     }
 
     /** Returns the data as json of the document or undefined
