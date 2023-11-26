@@ -4,10 +4,14 @@
   "description": "A local document based database for development stage and testing",
   "main": "dist/index.js",
   "pricing": "Free",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "tsc && node ./dist/index.js",
     "build": "tsc && npm link",
-    "test": "npx jest"
+    "test": "npx jest",
+    "build-pub" : "npx tsc && npm publish"
   },
   "author": "Tadiwanashe Shangwa",
   "license": "ISC",

@@ -184,6 +184,21 @@ export class SingleFileCollection  {
         return foundAt == -1 ? undefined : doc
     }
 
+    /** Gets the index of a document with a given id 
+     * Returns -1 if document is not found */
+    getDocIndex(id : string ) : number {
+        const docs = this.getAllDocs();
+        let foundAt = -1
+
+        docs.forEach((doc, index) => {
+            if(doc['id'] === id) {
+                foundAt = index;
+            }
+        })
+
+        return foundAt;
+    }
+
     getDocWhere<T>(key: string, equalTo: T) : any {
         const docs = this.getAllDocs();
         let foundAt = -1;
@@ -205,8 +220,24 @@ export class SingleFileCollection  {
         return doc == undefined ? undefined : doc.getDocData();
     }
 
-    updateDoc(id: string, newData: string): DocumentRef {
-        throw new Error("Method not implemented.");
+    /** Overwrites a document with th given ID with `newData`
+     * 
+     * @throws An error if the document doesn't exist
+     */
+    updateDoc(id: string, newData: any): void {
+        const docIndex = this.getDocIndex(id);
+
+        if (docIndex === -1) {
+            throw Error(`Document with id: ${id} 
+            doesn't exist so it cannot be updated
+            `)
+        }
+
+        const docs = this.getAllDocs();
+        newData['id'] = id;
+        docs[docIndex] = newData;
+
+        this.commitChanges(docs);
     }
 
     /** Returns  All the docs in a collection*/

@@ -1,5 +1,7 @@
 # Shangwa DB
 
+NOTE: Shangwa DB is still in BETA feedback would be appriciated!
+
 Shangwa DB is a NO-SQL document data store that programmers can use during testing  and development. There are situations where you might want to test your app using a mock or fake database, Shangwa DB is there for you.
 
 1. Its local so there is no need to make metwork calls which can be slow
@@ -20,23 +22,11 @@ const db = createDatabase({
     name : 'test-db',
 });
 ```
-The above code creates a directory where your database lives. The file is also automatically git ignored
-
-``` ts
-// Initializing a database
-const db = createDatabase({
-    name : 'test-db',
-    shouldGitIgnore : false
-});
-```
-
-If you want changes in your databases to be tracked by your viersioning system then set the `shouldGitIgnore` flag to false
-
 
 The following directory is automatically created for you but you don't have to ever touch it! JUst know that thats where your database leaves
 ```
 
--- shangwadb
+-- .local
     |
     -- test_db
 ```
@@ -73,7 +63,7 @@ The following directory is automatically created for you but you don't have to e
     const newUser = new User('tadiwa', '12345678');
 
     // Insert the doc
-    usersCol.insertOne(newUser.toDb())
+    usersCol.insertDoc(newUser.toDb())
 
 ```
 
@@ -81,10 +71,50 @@ The following directory is automatically created for you but you don't have to e
 
 ``` ts
 
-    useersCol.insertOne({
+    useersCol.insertDoc({
         username : 'tadiwa',
         password : '12345678'
     })
 
 ```
 
+## Deleted a doc
+```ts
+    const docID = 'user-1';
+
+    usersCol.deleteDoc(docId)
+```
+
+## Updated A document
+```ts
+    const docID = 'user-1';
+    const newData = {
+        username : 'tadiwa',
+        password: 'i_hate_typescript'
+    }
+
+    usersCol.updateDoc(docId)
+```
+
+## Getting a document
+
+```ts
+    const docID = 'user-1';
+
+    usersCol.getDocData(docId)
+```
+
+## Getting a document using the where clause
+
+```ts
+    const username = 'tadiwa';
+    usersCol.getDocWhere('username', 'tadiwa')
+```
+
+## Getting all the documents
+
+```ts 
+    const docs = usersCol.getAllDocs();
+
+    console.log(docs)
+```

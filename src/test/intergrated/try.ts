@@ -15,3 +15,6 @@ const usersCol = db.getCollection('users');
 
 console.log(usersCol.getDocData('1'));
 
+usersCol.getDocWhere('name', 'tadiwa')
+
+usersCol.getAllDocs
