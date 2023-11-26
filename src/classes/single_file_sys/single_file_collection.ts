@@ -1,6 +1,6 @@
 import { fixName } from "../../functions/utils";
 import { CollectionParams} from "../../interfaces/collection.interface";
-import { DocumentRef, SingleFileDocRef } from "../document_refs";
+import { SingleFileDocRef } from "../document_refs";
 import * as fs from 'fs';
 import { CollectionNotFound } from "../exceptions";
 
