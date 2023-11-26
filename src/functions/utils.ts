@@ -1,5 +1,5 @@
 import * as fs from 'fs'; 
-import { getBaseDir } from './create_db';
+import { getRootWorkingDir } from './db_creation_utils';
 
 /** Converts a string into snake case  */
 export function fixName(name : string) {

@@ -9,16 +9,11 @@
 
 import { DatabaseNotFound } from "./classes/exceptions";
 import { SingleFileDatabase } from "./classes/single_file_sys/single_file_database";
-import { setUpShangwaDB, getDatabasesRootPath } from "./functions/create_db";
+import { setUpLocalStore, getDatabasesDirPath } from "./functions/db_creation_utils";
 import { DatabaseConfig } from "./interfaces/database_config";
 import * as fs from 'fs';
 
-/** Represents the meta deta for a document */
-export interface DocumentData {
-    jsonStr : string
-}
-
-    /** Sets up a database in your working directory. If you specify to gitIgnore the databases
+/** Sets up a database in your working directory. If you specify to gitIgnore the databases
  * then changes to the database don't affect your git repo
  * 
  * @returns a `Database` object
@@ -27,11 +22,11 @@ export interface DocumentData {
  * @param shouldGitIgnore - a flag for Shangwa DB to git ignore your database or not 
  */
 export function createDatabase(config : DatabaseConfig) : SingleFileDatabase {
-    setUpShangwaDB()
+    setUpLocalStore()
 
     const db = new SingleFileDatabase({
         name : config.name,
-        parentPath : getDatabasesRootPath(),
+        parentPath : getDatabasesDirPath(),
         shouldGitIgnore : config.shouldGitIgnore
     })
     
@@ -43,7 +38,7 @@ export function createDatabase(config : DatabaseConfig) : SingleFileDatabase {
  */
 export function getExistingDatabase(name : string) : SingleFileDatabase {
 
-    const dbPath = `${getDatabasesRootPath()}/${name}`
+    const dbPath = `${getDatabasesDirPath()}/${name}`
     const exist = fs.existsSync(dbPath)
 
     // If database doesn't exists throw error
@@ -53,7 +48,7 @@ export function getExistingDatabase(name : string) : SingleFileDatabase {
 
     return new SingleFileDatabase({
         name : name,
-        parentPath : getDatabasesRootPath(),
+        parentPath : getDatabasesDirPath(),
         shouldGitIgnore : true
     })
 }

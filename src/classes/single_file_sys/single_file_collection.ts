@@ -1,7 +1,6 @@
 import { fixName } from "../../functions/utils";
-import { DocumentData, ICollection } from "../../interfaces/cluster.interface";
-import { CollectionParams } from "../multiple_file_sys/multiple_file_collection";
-import { DocumentRef, SingleFileDocRef } from "../document_ref";
+import { CollectionParams} from "../../interfaces/collection.interface";
+import { DocumentRef, SingleFileDocRef } from "../document_refs";
 import * as fs from 'fs';
 import { CollectionNotFound } from "../exceptions";
 
@@ -86,46 +85,13 @@ export class SingleFileCollection  {
         })
     }
 
-    /** inserts a document into the collection file passed as a `DocumentData` object 
-     * 
-     * @deprecated use `insertDoc` instead
-    */
-
-    insertOne(docData: DocumentData): SingleFileDocRef {
-        const colAsJson = this.getAllDocs();
-        const docId =  colAsJson.length.toString();
-        const docIndex  = colAsJson.length;
-
-        // The json string passed as parameter as a js object
-        const docAsObj = JSON.parse(docData.jsonStr);
-        docAsObj['id'] = docId;
-
-        colAsJson.push(docAsObj);
-
-        this.commitChanges(colAsJson)
-
-        return new SingleFileDocRef({
-            id : docId,
-            index : docIndex,
-            collectionPath: this.collectionFilePath
-        })
-
-    }
+    
 
     /** Overwrites the coollection json file with new data */
     private commitChanges(changes : any) : void {
         fs.writeFileSync( this.collectionFilePath, JSON.stringify(changes))
     }
 
-    /** Inserts many documents into the collection file
-     * 
-     * @deprecated use `insertDocs` instead
-     */
-    insertMany(jsonDocs: DocumentData[]): void {
-        jsonDocs.forEach((doc) => {
-            this.insertOne(doc)
-        })
-    }
 
     /** Inserts an array of docs into the store! */
     insertDocs(docs : any[]) : void {

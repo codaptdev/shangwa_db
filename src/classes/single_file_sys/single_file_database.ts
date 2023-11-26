@@ -1,5 +1,5 @@
 import { fixName } from "../../functions/utils";
-import { ICollection } from "../../interfaces/cluster.interface";
+import { ICollection } from "../../interfaces/collection.interface";
 import { IDatabase } from "../../interfaces/database.interface";
 import { ClusterConfig } from "../../interfaces/database_config";
 import * as fs from 'fs';

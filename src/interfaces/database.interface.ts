@@ -1,4 +1,4 @@
-import { ICollection } from "./cluster.interface";
+import { ICollection } from "./collection.interface";
 import { ClusterConfig } from "./database_config";
 
 export interface IDatabase {
