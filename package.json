@@ -1,6 +1,6 @@
 {
   "name": "shangwa_db",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A local document based database for development stage and testing",
   "main": "dist/index.js",
   "pricing": "Free",
