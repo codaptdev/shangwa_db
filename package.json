@@ -11,7 +11,7 @@
     "start": "tsc && node ./dist/index.js",
     "build": "tsc && npm link",
     "test": "npx jest",
-    "build-pub" : "npx tsc && npm publish"
+    "build-pub": "npx tsc && npm publish"
   },
   "author": "Tadiwanashe Shangwa",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "fs": "^0.0.1-security",
     "json2typescript": "^1.5.1",
     "typescript-json-schema": "^0.62.0",
     "uuid": "^9.0.1"
