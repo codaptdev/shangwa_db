@@ -5,3 +5,4 @@ export interface CollectionParams {
     path : string,
     delay? : 0
 }
+

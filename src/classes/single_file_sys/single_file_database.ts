@@ -1,9 +1,6 @@
 import { fixName } from "../../functions/utils";
-import { ICollection } from "../../interfaces/collection.interface";
-import { IDatabase } from "../../interfaces/database.interface";
 import { ClusterConfig } from "../../interfaces/database_config";
 import * as fs from 'fs';
-import { MiltipleFileCollection } from "../multiple_file_sys/multiple_file_collection";
 import { SingleFileCollection } from "./single_file_collection";
 
 export interface databaseParams  {
