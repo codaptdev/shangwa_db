@@ -1,6 +1,5 @@
-
-.*
 /dist
 /lib/dist
 node_modules
 /tsconfig.tsbuildinfo
+/.local
