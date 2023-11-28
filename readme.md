@@ -2,6 +2,8 @@
 
 NOTE: Shangwa DB is still in BETA feedback would be appriciated!
 
+### If you are using [Next Js](https://nextjs.org/) or [React JS](https://react.dev) or the [DOM]() read the docs on how to use it here! (docs)[]
+
 Shangwa DB is a NO-SQL document data store that programmers can use during testing  and development. There are situations where you might want to test your app using a mock or fake database, Shangwa DB is there for you.
 
 1. Its local so there is no need to make metwork calls which can be slow

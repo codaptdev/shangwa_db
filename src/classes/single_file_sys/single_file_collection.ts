@@ -152,7 +152,7 @@ export class SingleFileCollection  {
 
     /** Gets the index of a document with a given id 
      * Returns -1 if document is not found */
-    getDocIndex(id : string ) : number {
+    getDocIndex(id : string ) : number | undefined {
         const docs = this.getAllDocs();
         let foundAt = -1
 
@@ -162,10 +162,10 @@ export class SingleFileCollection  {
             }
         })
 
-        return foundAt;
+        return foundAt != -1 ? foundAt : undefined;
     }
 
-    getDocWhere<T>(key: string, equalTo: T) : any {
+    getDocWhere<T>(key: string, equalTo: T) : any | undefined {
         const docs = this.getAllDocs();
         let foundAt = -1;
 
@@ -175,7 +175,7 @@ export class SingleFileCollection  {
             }
         })
 
-        return docs.at(foundAt);
+        return foundAt == -1 ? undefined : docs.at(foundAt);
     }
 
     /** Returns the data as json of the document or undefined
@@ -197,13 +197,15 @@ export class SingleFileCollection  {
             throw Error(`Document with id: ${id} 
             doesn't exist so it cannot be updated
             `)
+        } else {
+            const docs = this.getAllDocs();
+            newData['id'] = id;
+            docs[docIndex ?? -1] = newData;
+
+            this.commitChanges(docs);
         }
 
-        const docs = this.getAllDocs();
-        newData['id'] = id;
-        docs[docIndex] = newData;
-
-        this.commitChanges(docs);
+        
     }
 
     /** Returns  All the docs in a collection*/
